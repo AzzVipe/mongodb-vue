@@ -1,0 +1,102 @@
+main {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/*gap: 1rem;*/
+}
+
+.profile-card .profile-card-text h1 {
+	font-size: 16px;
+  margin-bottom: .25rem;
+  font-weight: 400;
+}
+
+.profile-card .profile-card-text h2 {
+  font-size: 14px;
+  color: var(--gray-200);
+}
+
+/* Sign In & Sign Up page  */
+
+.p-tabmenu .p-tabmenu-nav, .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+	border: 0px !important;
+	margin: 0 !important;
+}
+
+.error-msg {
+	color: var(--red-700);
+}
+
+.container .p-card {
+	height: 100%;
+	padding: 1.25rem;
+}
+
+.container .p-card .p-card-body .p-card-title {
+	font-size: 2rem;
+	letter-spacing: 1px;
+	line-height: 2.5rem;
+}
+
+.container .p-card .p-card-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.container .p-card .p-card-body .p-card-content .p-inputtext {
+	width: 100%;
+}
+
+.container .p-card .p-card-footer {
+	display: flex;
+	gap: 1rem;
+}
+
+.router-link {
+	font-weight: 500;
+	align-self: flex-start;
+}
+
+/* Admin & User Page */
+
+.navigation .p-menubar {
+	padding: .5rem;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navigation .p-menubar-end .profile-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  margin-right: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navigation .p-menubar-end .profile-card:hover {
+	background-color: rgba(255, 255, 255, 0.04);
+}
+
+main .body {
+	padding: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.table-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
