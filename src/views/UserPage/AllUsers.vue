@@ -45,11 +45,11 @@ export default {
   },
 
   created() {
-    const app = Realm.getApp("application-0-kmolw");
-    const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+    this.realmApp = Realm.getApp("application-0-kmolw");
+    const mongodb = this.realmApp.currentUser.mongoClient("mongodb-atlas");
     const collection = mongodb.db("db1").collection("users");
 
-    this.userData = app.currentUser;
+    this.userData = this.realmApp.currentUser;
     collection.find()
     .then((data) => {
     	this.allUsers = data;
@@ -65,23 +65,26 @@ export default {
 	  	this.updateUserDialog = false;
 	  },
 	  updateUser() {
-			console.log("ok");
-	  	const app = Realm.getApp("application-0-kmolw");
-	    const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+	    const mongodb = this.realmApp.currentUser.mongoClient("mongodb-atlas");
 	    const collection = mongodb.db("db1").collection("users");
-	    const userName = this.selectedUserForEdit.name
-	    const uid = this.selectedUserForEdit.userID;
 
 	  	collection.updateOne(
-	  	  { userID: uid },
-	  	  { $set: { name: userName } }
-	  	)
-	  	.catch((err) => {
+	  	  { userID: this.selectedUserForEdit.userID },
+	  	  { $set: { name: this.selectedUserForEdit.name } }
+	  	).then((res) => {
+	  		this.allUsers.forEach((temp, index) => {
+	  			if (temp.userID == this.selectedUserForEdit.userID) {
+	  				this.allUsers[index] = this.selectedUserForEdit;
+	  			}
+	  		})
+	  	}).catch((err) => {
 	  		console.log(err);
 	  	})
-	  	app.currentUser.refreshCustomData();
+	  	if (this.selectedUserForEdit.userID == this.realmApp.currentUser.id) {
+	  		this.realmApp.currentUser.refreshCustomData();
+	  		this.$emit('userEdited', this.selectedUserForEdit);
+	  	}
 	  	this.updateUserDialog = false;
-	  	// location.reload();
 	  }
   },
 }

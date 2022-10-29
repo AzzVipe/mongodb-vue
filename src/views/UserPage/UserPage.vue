@@ -18,15 +18,7 @@
       </MenuBar>
     </div>
     <div class="body">
-      <router-view></router-view>
-      <!-- <div class="table-container">
-        <DataTable :value="[userData]">
-          <Column field="name" header="Name" />
-          <Column field="username" header="Username" />
-          <Column field="designation" header="Job Title" />
-          <Column field="role" header="Job Type" />
-        </DataTable>
-      </div> -->
+      <router-view @user-edited="userEdited"></router-view>
     </div>
   </main>
 </template>
@@ -57,27 +49,30 @@ export default {
   },
 
   created() {
-    const app = Realm.getApp("application-0-kmolw");
+    this.realmApp = Realm.getApp("application-0-kmolw");
     
-    if (app.currentUser.providerType === "anon-user")
+    if (this.realmApp.currentUser.providerType === "anon-user")
       this.isAnonUser = true;
 
-    app.currentUser.refreshCustomData();
-    this.userData.uid = app.currentUser.id;
-    this.userData.email = app.currentUser._profile.data.email;
-    this.userData.name = app.currentUser.customData.name;
+    this.realmApp.currentUser.refreshCustomData();
+    this.userData.uid = this.realmApp.currentUser.id;
+    this.userData.email = this.realmApp.currentUser._profile.data.email;
+    this.userData.name = this.realmApp.currentUser.customData.name;
   },
 
   methods: {
     handleSignOut() {
-      const app = Realm.getApp("application-0-kmolw");
       if (this.isAnonUser) 
-        app.deleteUser(app.currentUser);
+        this.realmApp.deleteUser(this.realmApp.currentUser);
       else 
-        app.currentUser.logOut();
+        this.realmApp.currentUser.logOut();
       this.isLoggedIn = false;
       this.userData = null;
       this.$router.push('/');
+    },
+    userEdited(user) {
+      this.userData.name = user.name;
+      this.realmApp.currentUser.refreshCustomData();
     }
   },
 }

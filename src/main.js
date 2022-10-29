@@ -27,6 +27,8 @@ app.use(PrimeVue);
 app.use(router);
 app.use(ToastService);
 
+app.config.globalProperties.realmApp = realmApp;
+
 app.component('InputText', InputText);
 app.component('Button', Button);
 app.component('Card', Card);
