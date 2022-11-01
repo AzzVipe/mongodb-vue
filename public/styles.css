@@ -33,28 +33,28 @@ main {
 	color: var(--red-700);
 }
 
-.container .p-card {
+.p-card {
 	height: 100%;
 	padding: 1.25rem;
 }
 
-.container .p-card .p-card-body .p-card-title {
+.p-card .p-card-body .p-card-title {
 	font-size: 2rem;
 	letter-spacing: 1px;
 	line-height: 2.5rem;
 }
 
-.container .p-card .p-card-content {
+.p-card .p-card-content {
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
 }
 
-.container .p-card .p-card-body .p-card-content .p-inputtext {
+.p-card .p-card-body .p-card-content .p-inputtext {
 	width: 100%;
 }
 
-.container .p-card .p-card-footer {
+.p-card .p-card-footer {
 	display: flex;
 	gap: 1rem;
 }

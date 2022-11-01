@@ -33,18 +33,26 @@ export default {
   data() {
     return {
       userData: {},
-      isLoggedIn: false,
       isAnonUser: false,
+      isAdmin: false,
       items: [{
-        label: 'All Users',
+        label: 'Home',
         icon: 'pi pi-home',
-        to: `/user/allusers`
+        to: '/user/userhome'
+      }, {
+        label: 'All Users',
+        icon: 'pi pi-users',
+        to: '/user/allusers'
+      }, {
+        label: 'Add User',
+        icon: 'pi pi-user-plus',
+        to: '/user/adduser',
+        visible: () => this.isAdmin
       }, {
         label: 'Sign Out',
         icon: 'pi pi-sign-out',
-        command: this.handleSignOut,
-        visible: this.isLoggedIn
-      }],
+        command: this.handleSignOut
+      }]
     }
   },
 
@@ -53,11 +61,19 @@ export default {
     
     if (this.realmApp.currentUser.providerType === "anon-user")
       this.isAnonUser = true;
+    else {
+      this.realmApp.currentUser.callFunction("isAdmin")
+      .then((data) => {
+        this.isAdmin = data;
+        localStorage.setItem('isAdmin', JSON.stringify(data));
+      })
+    }
 
     this.realmApp.currentUser.refreshCustomData();
     this.userData.uid = this.realmApp.currentUser.id;
     this.userData.email = this.realmApp.currentUser._profile.data.email;
     this.userData.name = this.realmApp.currentUser.customData.name;
+    
   },
 
   methods: {
@@ -66,15 +82,14 @@ export default {
         this.realmApp.deleteUser(this.realmApp.currentUser);
       else 
         this.realmApp.currentUser.logOut();
-      this.isLoggedIn = false;
-      this.userData = null;
+      // this.userData = null;
       this.$router.push('/');
     },
     userEdited(user) {
       this.userData.name = user.name;
       this.realmApp.currentUser.refreshCustomData();
     }
-  },
+  }
 }
 </script>
 

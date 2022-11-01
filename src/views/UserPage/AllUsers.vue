@@ -1,10 +1,10 @@
 <template>
 	<div class="table-container">
-		<DataTable v-if="allUsers.length != 0" :value="allUsers" :paginator="true" :rows="10" 
+		<DataTable v-if="allUsers.length != 0" :value="allUsers" :paginator="true" :rows="5" 
 		  v-model:selection="selectedUsers" :rowsPerPageOptions="[5,10,25]">
 			<Column selectionMode="multiple" style="width: 3rem" :exportable="false" />
 		  <Column :sortable="true" field="name" header="Name" />
-		  <Column :exportable="false">
+		  <Column v-if="isAdmin" :exportable="false">
 		  	<template #body="slotProps">
 		  		<Button icon="pi pi-pencil" class="p-button-rounded p-button-text" 
 		  			@click="editProduct(slotProps.data)" />
@@ -39,6 +39,7 @@ export default {
       allUsers: [],
       userData: {},
       selectedUserForEdit: {},
+      isAdmin: false,
       selectedUsers: null,
       updateUserDialog: false,
     }
@@ -48,6 +49,7 @@ export default {
     this.realmApp = Realm.getApp("application-0-kmolw");
     const mongodb = this.realmApp.currentUser.mongoClient("mongodb-atlas");
     const collection = mongodb.db("db1").collection("users");
+    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
 
     this.userData = this.realmApp.currentUser;
     collection.find()

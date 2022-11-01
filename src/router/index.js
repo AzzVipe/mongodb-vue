@@ -10,6 +10,20 @@ const requireAuth = (to, from, next) => {
     next();
 }
 
+const requireAdminAuth = (to, from, next) => {
+  const app = Realm.getApp("application-0-kmolw");
+
+  app.currentUser.callFunction("isAdmin")
+  .then((data) => {
+    if (data === true) {
+      next();
+    } else {
+      alert("Not Authorised");
+      next('/user');
+    }
+  })
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -25,9 +39,18 @@ const router = createRouter({
       component: () => import('../views/UserPage/UserPage.vue'),
       children: [
         {
+          path: 'userhome',
+          name: 'UserHome',
+          component: () => import('../views/UserPage/UserHome.vue')
+        }, {
           path: 'allusers',
           name: 'AllUsers',
           component: () => import('../views/UserPage/AllUsers.vue')
+        }, {
+          path: 'adduser',
+          name: 'AddUser',
+          beforeEnter: requireAdminAuth,
+          component: () => import('../views/UserPage/AddUser.vue')
         },
       ]
     },
@@ -35,11 +58,6 @@ const router = createRouter({
       path: '/',
       name: 'SingInPage',
       component: () => import('../views/SignInPage.vue')
-    },
-    {
-      path: '/sign-up',
-      name: 'SignUpPage',
-      component: () => import('../views/SignUpPage.vue')
     }
   ]
 })
