@@ -46,5 +46,6 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Dialog', Dialog);
 app.component('Dropdown', Dropdown);
+app.component('Toast', Toast);
 
 app.mount('#app')

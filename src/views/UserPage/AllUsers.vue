@@ -4,13 +4,18 @@
 		  v-model:selection="selectedUsers" :rowsPerPageOptions="[5,10,25]">
 			<Column selectionMode="multiple" style="width: 3rem" :exportable="false" />
 		  <Column :sortable="true" field="name" header="Name" />
+		  <Column :sortable="true" field="salary" header="Salary" />
+		  <!-- <Column v-if="isAdmin" :sortable="true" field="salary" header="Salary" /> -->
+		  <Column :sortable="true" field="role" header="Role" />
+		  <!-- <Column v-if="isAdmin" :sortable="true" field="role" header="Role" /> -->
 		  <Column v-if="isAdmin" :exportable="false">
 		  	<template #body="slotProps">
 		  		<Button icon="pi pi-pencil" class="p-button-rounded p-button-text" 
-		  			@click="editProduct(slotProps.data)" />
+		  			@click="editUser(slotProps.data)" />
 		  	</template>
 		  </Column>
 		</DataTable>
+
 		<Dialog v-model:visible="updateUserDialog" 
     	:style="{width: '450px'}" header="Product Details" :modal="true" class="p-fluid">
     	<template #footer>
@@ -21,6 +26,10 @@
     		<span class="p-float-label">
     		  <InputText id="name" type="name" v-model="selectedUserForEdit.name" placeholder="Name"/>
     		  <label for="name">Name</label>
+    		</span>
+    		<span class="p-float-label">
+    		  <InputText id="salary" type="number" v-model="selectedUserForEdit.salary" placeholder="Salary"/>
+    		  <label for="salary">Salary</label>
     		</span>
     	</div>
     </Dialog>
@@ -59,7 +68,7 @@ export default {
   },
 
   methods: {
-		editProduct(product) {
+		editUser(product) {
 			this.updateUserDialog = true;
       this.selectedUserForEdit = {...product};
 	  },
@@ -72,14 +81,17 @@ export default {
 
 	  	collection.updateOne(
 	  	  { userID: this.selectedUserForEdit.userID },
-	  	  { $set: { name: this.selectedUserForEdit.name } }
+	  	  { $set: { name: this.selectedUserForEdit.name, salary: this.selectedUserForEdit.salary } }
 	  	).then((res) => {
 	  		this.allUsers.forEach((temp, index) => {
 	  			if (temp.userID == this.selectedUserForEdit.userID) {
 	  				this.allUsers[index] = this.selectedUserForEdit;
 	  			}
 	  		})
+	  		this.$toast.add({severity: 'success', summary: 'Success', detail: 'User Updated', life: 3000});
 	  	}).catch((err) => {
+	  		this.$toast.add({severity: 'error', summary: 'Success', 
+	  			detail: 'User Update Failed', life: 3000});
 	  		console.log(err);
 	  	})
 	  	if (this.selectedUserForEdit.userID == this.realmApp.currentUser.id) {

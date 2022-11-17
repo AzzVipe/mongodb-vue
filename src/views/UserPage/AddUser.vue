@@ -19,6 +19,10 @@
       </span>
       <Dropdown v-model="selectedRole" :options="userRoles" 
         optionLabel="name" placeholder="Select the role" />
+      <span class="p-float-label">
+        <InputText id="salary" type="number" v-model="salary" placeholder="Salary"/>
+        <label for="salary">Salary</label>
+      </span>
       <p class="error-msg" v-if="errMsg"> {{ errMsg }} </p>
     </template>
     <template #footer>
@@ -40,6 +44,7 @@ export default {
       email: '',
       password: '',
       selectedRole: '',
+      salary: '',
       selectedDesignation: '',
       errMsg: null,
       userData: [],
@@ -59,12 +64,18 @@ export default {
     addUser() {
       const email = this.email;
       const password = this.password;
-      this.realmApp.currentUser.callFunction("addUser", this.email, this.name, this.selectedRole.name)
+
+      this.realmApp.currentUser.callFunction("addUser", this.email, this.name, 
+        this.selectedRole.name, this.salary)
       .then((data) => {
         console.log(data);
         if (data == true) {
           const credentials = Realm.Credentials.emailPassword(email, password);
           this.realmApp.emailPasswordAuth.registerUser({email, password})
+          .then(() => {
+            this.$toast.add({severity: 'success', summary: 'Success', detail: 'User Added', life: 3000});
+            this.$router.push('/user/allusers');
+          })
           .catch((err) => {
             console.log(err);
             this.errMsg = "Register Failed !"

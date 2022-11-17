@@ -27,7 +27,6 @@
 <script>
 
 import * as Realm from "realm-web";
-// import { googleSdkLoaded } from "vue3-google-login"
 
 export default {
   name: 'SignInPage',
@@ -55,7 +54,6 @@ export default {
 
       await this.realmApp.logIn(credentials)
       .then((user) => {
-        console.log(user.customData);
         return this.realmApp.currentUser.callFunction("isUserExist", user.id)
       })
       .then((data) => {
@@ -81,31 +79,13 @@ export default {
       const app = Realm.getApp("application-0-kmolw");
       app.logIn(credentials)
       .then((user) => {
-        this.$router.push({ name: 'UserPage' })
+        this.$router.push('user')
       })
       .catch((err) => {
         this.errMsg = "* Invalid";
         console.log(err);
       })
     },
-    
-    // callback() {
-    //   const app = Realm.getApp("application-0-kmolw");
-    //   googleSdkLoaded((google) => {
-    //     google.accounts.oauth2.initCodeClient({
-    //       client_id: "734960750491-ci1nnmaq463gc835qopqsns4drg1d947.apps.googleusercontent.com",
-    //       scope: 'email profile openid',
-    //       callback: (response) => {
-    //         console.log("Handle the response", response)
-    //         const cred = Realm.Credentials.google(response);
-    //         app.logIn(credentials)
-    //         .then((user) => alert(`Logged in with id: ${user.id}`))
-    //         .catch((err) => console.log(err));
-    //       }
-    //     }).requestCode()
-    //   })
-    //   // console.log("google login", response);
-    // }
   }
 };
 

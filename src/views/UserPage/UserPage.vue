@@ -18,6 +18,7 @@
       </MenuBar>
     </div>
     <div class="body">
+      <Toast position="top-right" />
       <router-view @user-edited="userEdited"></router-view>
     </div>
   </main>
@@ -42,7 +43,7 @@ export default {
       }, {
         label: 'All Users',
         icon: 'pi pi-users',
-        to: '/user/allusers'
+        to: '/user'
       }, {
         label: 'Add User',
         icon: 'pi pi-user-plus',
@@ -83,6 +84,7 @@ export default {
       else 
         this.realmApp.currentUser.logOut();
       // this.userData = null;
+      localStorage.removeItem('isAdmin');
       this.$router.push('/');
     },
     userEdited(user) {
