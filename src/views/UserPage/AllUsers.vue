@@ -58,13 +58,16 @@ export default {
     this.realmApp = Realm.getApp("application-0-kmolw");
     const mongodb = this.realmApp.currentUser.mongoClient("mongodb-atlas");
     const collection = mongodb.db("db1").collection("users");
-    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
 
     this.userData = this.realmApp.currentUser;
     collection.find()
     .then((data) => {
     	this.allUsers = data;
     })
+  },
+  mounted() {
+  	this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+  	console.log(this.isAdmin);
   },
 
   methods: {

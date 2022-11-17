@@ -35,7 +35,8 @@ export default {
     return {
       email: null,
       password: null,
-      errMsg: null
+      errMsg: null,
+      isAdmin: false
     }
   },
 
@@ -58,15 +59,16 @@ export default {
       })
       .then((data) => {
         if (data === false) {
-          console.log("ok");
           this.realmApp.currentUser.callFunction("syncUser", this.realmApp.currentUser.id, this.email)
-          .then((res) => {
-            this.realmApp.currentUser.refreshCustomData();
-            this.$router.push({ name: 'UserPage' });
-          })
-        } else {
+          this.realmApp.currentUser.refreshCustomData();
+        }
+        this.realmApp.currentUser.callFunction("isAdmin")
+        .then((data) => {
+          this.isAdmin = data;
+          localStorage.setItem('isAdmin', JSON.stringify(data));
           this.$router.push({ name: 'UserPage' });
-        } 
+        })
+        
       })
       .catch((err) => {
         this.errMsg = "* Invalid username/password";

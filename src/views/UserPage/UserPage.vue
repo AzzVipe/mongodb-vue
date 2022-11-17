@@ -63,19 +63,18 @@ export default {
     if (this.realmApp.currentUser.providerType === "anon-user")
       this.isAnonUser = true;
     else {
-      this.realmApp.currentUser.callFunction("isAdmin")
-      .then((data) => {
-        this.isAdmin = data;
-        localStorage.setItem('isAdmin', JSON.stringify(data));
-      })
+      this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
     }
 
     this.realmApp.currentUser.refreshCustomData();
     this.userData.uid = this.realmApp.currentUser.id;
     this.userData.email = this.realmApp.currentUser._profile.data.email;
     this.userData.name = this.realmApp.currentUser.customData.name;
-    
   },
+
+  // mounted() {
+  //   this.$router.push('/user');
+  // },
 
   methods: {
     handleSignOut() {

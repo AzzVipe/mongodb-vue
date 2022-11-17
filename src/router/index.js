@@ -37,16 +37,19 @@ const router = createRouter({
       name: 'UserPage',
       beforeEnter: requireAuth,
       component: () => import('../views/UserPage/UserPage.vue'),
+      redirect: {
+        name: 'AllUsers'
+      },
       children: [
         {
-          path: 'userhome',
-          name: 'UserHome',
-          component: () => import('../views/UserPage/UserHome.vue')
-        }, {
           path: '',
           name: 'AllUsers',
           component: () => import('../views/UserPage/AllUsers.vue')
         }, {
+          path: 'userhome',
+          name: 'UserHome',
+          component: () => import('../views/UserPage/UserHome.vue')
+        },  {
           path: 'adduser',
           name: 'AddUser',
           beforeEnter: requireAdminAuth,
